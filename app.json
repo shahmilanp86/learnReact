@@ -15,11 +15,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.atomictherapy.ts.app.mpsrecords"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
