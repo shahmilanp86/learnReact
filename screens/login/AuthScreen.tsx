@@ -6,77 +6,123 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import { connect } from 'react-redux';
-
+import ClientUsers from './../../models/clientUsers';
+import LoadingSpinner from './../../components/loadingSpinner';
 const AuthScreen = (props: any) => {
-  const [MyData, setMyData] = React.useState<Array<object>>([]);
-
+  // const [MyData, setMyData] = React.useState<Array<object>>([]);
+  const statusEnum = {
+    loading: 'loading',
+    error: 'error',
+    notAuth: 'notAuth',
+    ready: 'ready',
+  };
+  const [status, setStatus] = React.useState(statusEnum.loading);
   const logoutButtonHandler = () => {
     console.log('Loginn Clicked');
+    props.setClientId('');
     firebase.auth().signOut();
   };
-
-  React.useEffect(() => {
-    console.log('Call Fb to get data');
-
+  const setIsLoading = () => {
+    setStatus(statusEnum.loading);
+  };
+  const isLoading = () => {
+    return statusEnum.loading === status;
+  };
+  const fetchClientId = () => {
     let db = firebase.firestore();
-    let tmpData: Array<object> = [];
-    db.collection('clientUsers')
-      // .where("amtPendingAfter", ">", 0)
-      .orderBy('addedOn', 'desc')
+    props.setClientId('');
+    setIsLoading();
+    db.collection(ClientUsers.COLLECTION_NAME)
+      .where(ClientUsers.FIELD_active, '==', true)
+      .where(ClientUsers.FIELD_email, '==', firebase.auth().currentUser?.email)
       .get()
       .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          // doc.data() is never undefined for query doc snapshots
-          let obj = doc.data();
-          tmpData.push({ email: obj.email, client: obj.client });
-          console.log('data fetched: ', obj);
-        });
-        setMyData(tmpData);
+        if (querySnapshot.size) {
+          querySnapshot.forEach(function (doc) {
+            let obj = doc.data();
+            console.log('data fetched: ', obj);
+            props.setClientId(obj.client);
+          });
+          setStatus(statusEnum.ready);
+        } else {
+          props.setClientId('');
+          setStatus(statusEnum.notAuth);
+        }
       })
       .catch(function (error) {
         console.log('Error getting documents: ', error);
+
+        setStatus(statusEnum.error);
       });
+  };
+  React.useEffect(() => {
+    console.log('Call Fb to get clientId');
+    fetchClientId();
   }, []);
 
-  const renderListItem = (item: any) => {
-    return <Text>{item}</Text>;
+  const errorView = () => {
+    return (
+      <View style={styles.container}>
+        <Text>Unable to load your account</Text>
+        <Button onPress={fetchClientId} title="Retry" />
+        <Button onPress={logoutButtonHandler} title="Sign out" />
+      </View>
+    );
   };
-  const Item = ({ title }: { title: any }) => (
-    <View style={styles.lineItem}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
-  const renderItem = ({ item }: { item: any }) => {
-    console.log('milan jere : clinet', item);
-    return <Item title={item.client} />;
+  const loadingView = () => {
+    return <LoadingSpinner />;
+  };
+  const unAuthView = () => {
+    return (
+      <View style={styles.container}>
+        <Text>You are not authorized to access this account</Text>
+        <Button onPress={fetchClientId} title="Retry" />
+        <Button onPress={logoutButtonHandler} title="Sign out" />
+      </View>
+    );
   };
 
-  return (
-    <React.Fragment>
+  const readyView = () => {
+    return (
       <View style={styles.container}>
         <View style={styles.section}>
-          <Button onPress={props.setUserAuthorized} title="Auth user" />
+          <Button onPress={fetchClientId} title="fetch ClientId again" />
           <Button onPress={logoutButtonHandler} title="Sign out" />
-          <Text>
-            AuthScreen : {props.isAuthorized ? ' i am authorizwd' : 'NOT Auth'}
-          </Text>
+          <Text>Clinet ID: {props.clientId}</Text>
         </View>
         <View style={[styles.container, styles.section]}>
-          <FlatList data={MyData} renderItem={renderItem}></FlatList>
+          <Text>Clinet ID: {props.clientId}</Text>
+          {/* <FlatList data={MyData} renderItem={renderItem}></FlatList> */}
         </View>
       </View>
-    </React.Fragment>
-  );
+    );
+  };
+
+  const getViewToDisplay = (status: string) => {
+    switch (status) {
+      case statusEnum.loading:
+        return loadingView();
+      case statusEnum.ready:
+        return readyView();
+      case statusEnum.notAuth:
+        return unAuthView();
+      case statusEnum.error:
+        return errorView();
+    }
+  };
+
+  return <React.Fragment>{getViewToDisplay(status)}</React.Fragment>;
 };
 function mapStatestoProps(state: any) {
   return {
-    isAuthorized: state.isAuthorized,
+    clientId: state.clientId,
   };
 }
 
 function mapDispatchtoProps(dispatch: Function) {
   return {
-    setUserAuthorized: () => dispatch({ type: 'USER_AUTHORIZED' }),
+    setClientId: (clientId: string) =>
+      dispatch({ type: 'SET_CLIENT_ID', clientId }),
   };
 }
 export default connect(mapStatestoProps, mapDispatchtoProps)(AuthScreen);

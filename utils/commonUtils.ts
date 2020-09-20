@@ -1,7 +1,7 @@
 import * as Device from 'expo-device';
 
 const isWeb = () => {
-  return (
+  return !(
     Device.modelId &&
     Device.designName &&
     Device.totalMemory &&

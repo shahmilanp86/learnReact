@@ -7,7 +7,7 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 //---- defined by me
-import LoadingScreen from './screens/LoadingScreen';
+import LandingScreen from './screens/LandingScreen';
 import LoginScreen from './screens/login/LoginScreen';
 import AuthScreen from './screens/login/AuthScreen';
 import { initFirebase, multiUserConfig } from './config/firebaseConfig';
@@ -23,6 +23,7 @@ let reduxWebDebugger: any = {};
 const store = createStore(
   sessionReducer /* preloadedState, */,
   isWeb() &&
+    window &&
     window.__REDUX_DEVTOOLS_EXTENSION__ &&
     window.__REDUX_DEVTOOLS_EXTENSION__()
 );
@@ -31,7 +32,7 @@ const store = createStore(
 initFirebase();
 
 const appSwitchNavigator = createSwitchNavigator({
-  LoadingScreen,
+  LandingScreen,
   LoginScreen,
   AuthScreen,
 });

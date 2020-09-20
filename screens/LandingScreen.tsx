@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import firebase from 'firebase/app';
+import LoadingSpinner from '../components/LoadingSpinner';
+
 // import * as Random from 'expo-random';
 
-const LoadingScreen = (props: any) => {
+const LandingScreen = (props: any) => {
   const isLoggedIn = async () => {
     console.log('props : ', props);
     // var firebaseMock = {
@@ -38,14 +40,13 @@ const LoadingScreen = (props: any) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <ActivityIndicator size="large" />
-      <Text>Loading please wait2...</Text>
-    </View>
+    <React.Fragment>
+      <LoadingSpinner></LoadingSpinner>
+    </React.Fragment>
   );
 };
 
-export default LoadingScreen;
+export default LandingScreen;
 
 const styles = StyleSheet.create({
   container: {

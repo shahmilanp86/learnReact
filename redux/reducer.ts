@@ -4,9 +4,12 @@ const sessionReducer = (state = initialState, action: any) => {
   let updatedState = {};
   console.info('entered sessionReducer action: ', action);
   switch (action.type) {
-    case 'USER_AUTHORIZED':
+    case 'SET_CLIENT_ID':
+      if (action.clientId) {
+        console.info('entered sessionReducer  Clinet ID ', action.clientId);
+      }
       updatedState = {
-        isAuthorized: true,
+        clientId: action.clientId,
       };
       break;
   }
