@@ -11,6 +11,23 @@ import LoadingScreen from './screens/LoadingScreen';
 import LoginScreen from './screens/login/LoginScreen';
 import AuthScreen from './screens/login/AuthScreen';
 import { initFirebase, multiUserConfig } from './config/firebaseConfig';
+
+import { createStore } from 'redux';
+import sessionReducer from './redux/reducer';
+import { isWeb } from './utils/commonUtils';
+import { Provider } from 'react-redux';
+
+/* eslint-disable no-underscore-dangle */
+let reduxWebDebugger: any = {};
+
+const store = createStore(
+  sessionReducer /* preloadedState, */,
+  isWeb() &&
+    window.__REDUX_DEVTOOLS_EXTENSION__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+/* eslint-enable */
+
 initFirebase();
 
 const appSwitchNavigator = createSwitchNavigator({
@@ -35,7 +52,7 @@ export default function App() {
     return null;
   } else {
     return (
-      <React.Fragment>
+      <Provider store={store}>
         <SafeAreaProvider>
           <ThemeProvider theme={theme} useDark={colorScheme === 'dark'}>
             <BootupNavigator />
@@ -43,7 +60,7 @@ export default function App() {
             <StatusBar />
           </ThemeProvider>
         </SafeAreaProvider>
-      </React.Fragment>
+      </Provider>
     );
   }
 }

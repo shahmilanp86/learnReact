@@ -22,6 +22,7 @@
     "expo-asset": "~8.1.7",
     "expo-auth-session": "1.5.0",
     "expo-constants": "~9.1.1",
+    "expo-device": "~2.2.1",
     "expo-firebase-analytics": "~2.4.1",
     "expo-font": "~8.2.1",
     "expo-linking": "^1.0.1",
@@ -39,7 +40,9 @@
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-web": "~0.11.7",
-    "react-navigation": "^4.4.0"
+    "react-navigation": "^4.4.0",
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

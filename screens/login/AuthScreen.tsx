@@ -5,7 +5,9 @@ import firebase from 'firebase/app';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-const AuthScreen = () => {
+import { connect } from 'react-redux';
+
+const AuthScreen = (props: any) => {
   const [MyData, setMyData] = React.useState<Array<object>>([]);
 
   const logoutButtonHandler = () => {
@@ -18,7 +20,6 @@ const AuthScreen = () => {
 
     let db = firebase.firestore();
     let tmpData: Array<object> = [];
-
     db.collection('clientUsers')
       // .where("amtPendingAfter", ">", 0)
       .orderBy('addedOn', 'desc')
@@ -54,8 +55,11 @@ const AuthScreen = () => {
     <React.Fragment>
       <View style={styles.container}>
         <View style={styles.section}>
-          <Text>AuthScreen</Text>
+          <Button onPress={props.setUserAuthorized} title="Auth user" />
           <Button onPress={logoutButtonHandler} title="Sign out" />
+          <Text>
+            AuthScreen : {props.isAuthorized ? ' i am authorizwd' : 'NOT Auth'}
+          </Text>
         </View>
         <View style={[styles.container, styles.section]}>
           <FlatList data={MyData} renderItem={renderItem}></FlatList>
@@ -64,8 +68,18 @@ const AuthScreen = () => {
     </React.Fragment>
   );
 };
+function mapStatestoProps(state: any) {
+  return {
+    isAuthorized: state.isAuthorized,
+  };
+}
 
-export default AuthScreen;
+function mapDispatchtoProps(dispatch: Function) {
+  return {
+    setUserAuthorized: () => dispatch({ type: 'USER_AUTHORIZED' }),
+  };
+}
+export default connect(mapStatestoProps, mapDispatchtoProps)(AuthScreen);
 
 const styles = StyleSheet.create({
   lineItem: {},
