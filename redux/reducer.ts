@@ -1,15 +1,13 @@
 import * as initialState from './../redux/initialState';
-
+//combine reducers = https://www.youtube.com/watch?v=t3nMT8bmBw0
 const sessionReducer = (state = initialState, action: any) => {
   let updatedState = {};
-  console.warn('entered here action: ', action);
+  console.info('entered sessionReducer action: ', action);
   switch (action.type) {
     case 'USER_AUTHORIZED':
-      console.warn('entered here : ', updatedState);
       updatedState = {
         isAuthorized: true,
       };
-      console.warn('entered here Done : ', updatedState);
       break;
   }
   return { ...state, ...updatedState };
