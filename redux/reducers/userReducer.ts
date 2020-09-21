@@ -13,6 +13,12 @@ const sessionReducer = (state = initialState, action: any) => {
     case appConstants.actionNames.increment:
       updatedState = { counter: state.counter + 1 };
       break;
+    case appConstants.actionNames.LOGOUT_USER:
+      updatedState = {
+        clientIdStatus: appConstants.statusEnum.virgin,
+        clientId: '',
+      };
+      break;
 
     //Clinet ID
     case appConstants.actionNames.LOADING_CLIENT_ID:

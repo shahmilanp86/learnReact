@@ -25,6 +25,8 @@ const appConstants = {
     FIREBASE_STORAGE_PATH: configPreFix + 'firebaseStoragePath',
   },
   actionNames: {
+    LOGOUT_USER: 'LOGOUT_USER',
+
     LOADING_CLIENT_ID: 'LOADING_CLIENT_ID',
     SET_CLIENT_ID_LOADED: 'SET_CLIENT_ID_LOADED',
     // SET_STATUS_CLIENT_ID: 'SET_STATUS_CLIENT_ID',

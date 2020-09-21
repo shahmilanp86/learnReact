@@ -47,6 +47,11 @@ const incrementAction = () => {
 //   };
 // };
 
+const logoutUserAction = () => {
+  firebase.auth().signOut();
+
+  return { type: appConstants.actionNames.LOGOUT_USER };
+};
 const setClientIdAction = (type: string, clientId: string = '') => {
   return { type, clientId };
 };
@@ -140,4 +145,9 @@ const fetchClientConfigAction = (clientId: string) => {
       });
   };
 };
-export { fetchClientIdAction, fetchClientConfigAction, incrementAction };
+export {
+  fetchClientIdAction,
+  fetchClientConfigAction,
+  logoutUserAction,
+  incrementAction,
+};

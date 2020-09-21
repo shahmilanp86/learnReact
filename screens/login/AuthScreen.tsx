@@ -16,6 +16,7 @@ import appConstants from './../../constants/appConstants';
 import {
   fetchClientIdAction,
   fetchClientConfigAction,
+  logoutUserAction,
   incrementAction,
 } from './../../redux';
 
@@ -61,8 +62,7 @@ const AuthScreen = (props: any) => {
   // const [pageStatus, setPageStatus] = React.useState(statusEnum.loading);
   const logoutButtonHandler = () => {
     console.log('Loginn Clicked');
-    props.setClientIdAction('');
-    firebase.auth().signOut();
+    props.logoutUserAction();
   };
 
   // const setIsLoading = () => {
@@ -266,6 +266,7 @@ function mapStatestoProps(state: any) {
 const mapDispatchtoProps = {
   fetchClientIdAction,
   fetchClientConfigAction,
+  logoutUserAction,
   incrementAction,
 };
 
