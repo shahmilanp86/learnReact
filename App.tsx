@@ -12,22 +12,24 @@ import LoginScreen from './screens/login/LoginScreen';
 import AuthScreen from './screens/login/AuthScreen';
 import { initFirebase, multiUserConfig } from './config/firebaseConfig';
 
-import { createStore } from 'redux';
-import sessionReducer from './redux/reducer';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { logger } from 'redux-logger';
+import thunk from 'redux-thunk';
+import rootReducer from './redux/rootReducer';
 import { isWeb } from './utils/commonUtils';
 import { Provider } from 'react-redux';
 
+let composeEnhancers = compose;
 /* eslint-disable no-underscore-dangle */
-let reduxWebDebugger: any = {};
+if (isWeb() && window && window.__REDUX_DEVTOOLS_EXTENSION__) {
+  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+}
+/* eslint-enable */
 
 const store = createStore(
-  sessionReducer /* preloadedState, */,
-  isWeb() &&
-    window &&
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
+  rootReducer /* preloadedState, */,
+  composeEnhancers(applyMiddleware(...[logger, thunk]))
 );
-/* eslint-enable */
 
 initFirebase();
 

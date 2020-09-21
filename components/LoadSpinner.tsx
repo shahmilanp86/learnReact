@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-const LoadingSpinner = (props: any) => {
+const LoadSpinner = (props: any) => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" />
@@ -10,7 +10,7 @@ const LoadingSpinner = (props: any) => {
   );
 };
 
-export default LoadingSpinner;
+export default LoadSpinner;
 
 const styles = StyleSheet.create({
   container: {

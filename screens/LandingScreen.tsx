@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import firebase from 'firebase/app';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadSpinner from '../components/LoadSpinner';
 
 // import * as Random from 'expo-random';
 
@@ -41,7 +41,7 @@ const LandingScreen = (props: any) => {
 
   return (
     <React.Fragment>
-      <LoadingSpinner></LoadingSpinner>
+      <LoadSpinner></LoadSpinner>
     </React.Fragment>
   );
 };
