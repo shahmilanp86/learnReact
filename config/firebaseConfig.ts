@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import 'firebase/auth';
 import 'firebase/firestore';
 export const drShahConfig = {
@@ -23,7 +23,7 @@ export const webClientId: string =
   '1049636241456-rnaahqd1h8cbffkn6bvfv0ipv0mmblrr.apps.googleusercontent.com';
 
 export function initFirebase() {
-  if (!firebase.apps.length) {
+  if (!(firebase && firebase.apps && firebase.apps.length)) {
     firebase.initializeApp(multiUserConfig);
     // firebase.firestore().enablePersistence({ synchronizeTabs: true });
     // const db = firebase.firestore();
